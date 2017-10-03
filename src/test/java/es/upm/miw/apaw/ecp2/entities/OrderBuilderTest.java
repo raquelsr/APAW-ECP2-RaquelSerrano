@@ -14,15 +14,14 @@ public class OrderBuilderTest {
 
     @Test
     public void testNewOrder() {
-        Order order = new OrderBuilder(1,new BigDecimal("5")).build();
+        Order order = new OrderBuilder(new BigDecimal("5")).build();
         assertNotNull(order.getDate());
-        assertEquals(new BigDecimal("5"), order.getAmount());
-        assertEquals(1, order.getId());        
+        assertEquals(new BigDecimal("5"), order.getAmount());       
     }
     
     @Test
     public void testOrder() {
-        Order order = new OrderBuilder(1).amount(new BigDecimal("7")).build();
+        Order order = new OrderBuilder(new BigDecimal("5")).amount(new BigDecimal("7")).build();
         assertEquals(new BigDecimal("7"), order.getAmount());
         assertNotNull(order.getDate());
     }
@@ -30,10 +29,9 @@ public class OrderBuilderTest {
     @Test
     public void testOrderUpdateDate() {
         Calendar now = Calendar.getInstance();
-        Order order = new OrderBuilder(1).date(now).amount(new BigDecimal("5")).build();
+        Order order = new OrderBuilder(new BigDecimal("5")).date(now).amount(new BigDecimal("5")).build();
         assertEquals(now, order.getDate());
         assertEquals(new BigDecimal("5"), order.getAmount());
-        assertEquals(1, order.getId());
     }
 
 }

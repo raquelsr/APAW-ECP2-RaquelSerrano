@@ -11,19 +11,17 @@ public class Order {
 
     private BigDecimal amount;
 
-    public Order(int id) {
-        this.id = id;
-        this.date = Calendar.getInstance();
-    }
-    
-    public Order(int id, BigDecimal amount) {
-        this.id = id;
+    public Order(BigDecimal amount) {
         this.date = Calendar.getInstance();
         this.amount = amount;
     }
 
     public int getId() {
         return id;
+    }
+    
+    public void setId (int id) {
+        this.id = id;
     }
 
     public Calendar getDate() {

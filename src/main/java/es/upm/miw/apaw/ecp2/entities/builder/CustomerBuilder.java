@@ -10,8 +10,8 @@ public class CustomerBuilder {
     
     private Customer customer;
     
-    public CustomerBuilder (int id, String name) {
-        this.customer = new Customer(id, name);
+    public CustomerBuilder (String name, String address) {
+        this.customer = new Customer(name,address);
     }
     
     public CustomerBuilder name (String name) {

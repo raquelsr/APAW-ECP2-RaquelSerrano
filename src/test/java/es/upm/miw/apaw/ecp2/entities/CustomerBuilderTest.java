@@ -23,15 +23,14 @@ public class CustomerBuilderTest {
     @Before
     public void before() {
         calendar = Calendar.getInstance();
-        order1 = new Order(1, new BigDecimal("2"));
-        order2 = new Order(2,  new BigDecimal("4"));
-        order3 = new Order(3,  new BigDecimal("7"));
+        order1 = new Order(new BigDecimal("2"));
+        order2 = new Order(new BigDecimal("4"));
+        order3 = new Order(new BigDecimal("7"));
     }
 
     @Test
     public void testCustomerBuilder() {
-        Customer customer = new CustomerBuilder(1, "Paco").address("Calle Francia").date(calendar).build();
-        assertEquals(1, customer.getId());
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").date(calendar).build();
         assertEquals("Paco", customer.getName());
         assertEquals("Calle Francia", customer.getAddress());
         assertEquals(calendar, customer.getDate());
@@ -40,37 +39,36 @@ public class CustomerBuilderTest {
 
     @Test
     public void testCreateOrder() {
-        assertEquals(1, order1.getId());
         assertEquals(new BigDecimal("2"), order1.getAmount());
         //assertEquals(calendar, order1.getDate());
     }
     
     @Test
     public void testDateCustomer() {
-        Customer customer = new CustomerBuilder(1, "Paco").build();
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").build();
         assertNotNull(customer.getDate());
     }
 
     @Test
     public void testNameCustomer() {
-        Customer customer = new CustomerBuilder(1, "Paco").name("Maria").build();
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").name("Maria").build();
         assertEquals("Maria" , customer.getName());
     }
     
     @Test
     public void testNewOrderCustomerBuilder() {
-        Customer customer = new CustomerBuilder(1, "Paco").order(new Order(1,  new BigDecimal("2"))).build();
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").order(new Order(new BigDecimal("2"))).build();
         assertNotNull(customer.getOrders());
         assertEquals(1, customer.getOrders().size());
     }
 
     @Test
     public void testCustomerContainOrder() {
-        Customer customer = new CustomerBuilder(1, "Paco").address("Calle Francia").order(order1).build();
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").address("Calle Francia").order(order1).build();
         assertTrue(customer.containsOrder(order1));
         assertFalse(customer.containsOrder(order2));
 
-        Customer customer2 = new CustomerBuilder(2, "Pepe").address("Calle Madrid").date(calendar).order(order1).order(order2).build();
+        Customer customer2 = new CustomerBuilder("Paco", "Calle Francia").address("Calle Madrid").date(calendar).order(order1).order(order2).build();
         assertNotNull(customer2.getOrders());
         assertTrue(customer2.containsOrder(order1));
         assertTrue(customer2.containsOrder(order2));
@@ -79,14 +77,14 @@ public class CustomerBuilderTest {
 
     @Test
     public void testOrderContainsNull() {
-        Customer customer = new CustomerBuilder(3, "Paco").build();
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").build();
         assertNull(customer.getOrders());
         assertFalse(customer.containsOrder(null));
     }
 
     @Test
     public void testOrderContainsNotNull() {
-        Customer customer = new CustomerBuilder(3, "Paco").order(order3).build();
+        Customer customer = new CustomerBuilder("Paco", "Calle Francia").order(order3).build();
         assertNotNull(customer.getOrders());
     }
 

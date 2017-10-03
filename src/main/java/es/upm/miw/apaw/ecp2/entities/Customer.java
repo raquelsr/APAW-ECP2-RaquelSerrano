@@ -15,9 +15,9 @@ public class Customer {
 
     private List<Order> orders;
 
-    public Customer(int id, String name) {
-        this.id = id;
+    public Customer(String name, String address) {
         this.name = name;
+        this.address = address;
         this.date = Calendar.getInstance();
     }
 
@@ -25,6 +25,9 @@ public class Customer {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }

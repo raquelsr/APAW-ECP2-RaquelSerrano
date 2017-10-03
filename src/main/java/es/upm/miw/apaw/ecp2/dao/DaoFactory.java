@@ -1,12 +1,20 @@
 package es.upm.miw.apaw.ecp2.dao;
 
-import es.upm.miw.apaw.ecp2.dao.memory.DaoMemoryFactory;
+public abstract class DaoFactory {
 
-public class DaoFactory {
+    private static DaoFactory factory = null;
 
-    public static void setFactory(DaoMemoryFactory daoMemoryFactory) {
-        // TODO Auto-generated method stub
-        
+    public static void setFactory(DaoFactory factory) {
+        DaoFactory.factory = factory;
     }
+
+    public static DaoFactory getFactory() {
+        assert factory != null;
+        return factory;
+    }
+
+    public abstract CustomerDao getCustomerDao();
+
+    public abstract OrderDao getOrderDao();
 
 }
