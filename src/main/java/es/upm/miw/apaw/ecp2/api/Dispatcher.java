@@ -1,10 +1,10 @@
 package es.upm.miw.apaw.ecp2.api;
 
+import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
+import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
+import es.upm.miw.apaw.ecp2.api.resources.exception.RequestInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpRequest;
 import es.upm.miw.apaw.ecp2.http.HttpResponse;
-import es.upm.miw.apaw.ecp2.resource.CustomerResource;
-import es.upm.miw.apaw.ecp2.resource.exception.CustomerInvalidException;
-import es.upm.miw.apaw.ecp2.resource.exception.RequestInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpStatus;
 
 public class Dispatcher {
