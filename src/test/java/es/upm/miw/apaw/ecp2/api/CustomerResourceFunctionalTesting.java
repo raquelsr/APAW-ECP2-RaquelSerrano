@@ -39,7 +39,7 @@ public class CustomerResourceFunctionalTesting {
     }
 
     @Test(expected = HttpException.class)
-    public void testCreateWithoutThemeBody() {
+    public void testCreateWithoutCustomerBody() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).build();
         new HttpClientService().httpRequest(request);
     }

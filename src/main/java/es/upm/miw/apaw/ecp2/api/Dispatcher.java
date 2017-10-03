@@ -3,6 +3,7 @@ package es.upm.miw.apaw.ecp2.api;
 import es.upm.miw.apaw.ecp2.http.HttpRequest;
 import es.upm.miw.apaw.ecp2.http.HttpResponse;
 import es.upm.miw.apaw.ecp2.resource.CustomerResource;
+import es.upm.miw.apaw.ecp2.resource.exception.CustomerInvalidException;
 import es.upm.miw.apaw.ecp2.resource.exception.RequestInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpStatus;
 
@@ -23,8 +24,14 @@ public class Dispatcher {
     public void doPost(HttpRequest request, HttpResponse response) {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS)) {
-                customerResource.createCustomer(request.getBody());
-                response.setStatus(HttpStatus.CREATED);
+                if ((request.getBody() == null) ||(request.getBody().split(":").length < 2)) {
+                    throw new CustomerInvalidException();
+                } else {
+                    String customerName = request.getBody().split(":")[0];
+                    String customerAddress = request.getBody().split(":")[1];
+                    customerResource.createCustomer(customerName, customerAddress);
+                    response.setStatus(HttpStatus.CREATED);
+                }
             } else {
                 throw new RequestInvalidException(request.getPath());
             }
