@@ -6,6 +6,7 @@ import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
 public class CustomerResource {
 
     public static final String CUSTOMERS = "customers";
+    public static final String ID = "id";
 
     public void createCustomer(String name, String address) throws CustomerInvalidException {
         if ((name == null) || (address == null)) {
