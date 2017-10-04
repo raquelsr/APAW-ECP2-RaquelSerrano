@@ -56,6 +56,7 @@ public class CustomerResourceFunctionalTesting {
     
     @Test(expected = HttpException.class)
     public void testReadCustomerIdNotFoundException() {
+        this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("4").build();
         new HttpClientService().httpRequest(request);
@@ -63,6 +64,7 @@ public class CustomerResourceFunctionalTesting {
     
     @Test(expected = HttpException.class)
     public void testReadCustomerIdInvalidException() {
+        this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("-1").build();
         new HttpClientService().httpRequest(request);
