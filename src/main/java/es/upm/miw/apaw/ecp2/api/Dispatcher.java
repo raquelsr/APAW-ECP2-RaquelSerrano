@@ -48,7 +48,7 @@ public class Dispatcher {
                     throw new OrderInvalidException();
                 } else {
                     String amountOrder = request.getBody();
-                    orderResource.createOrder(Integer.valueOf(amountOrder));
+                    orderResource.createOrder(Double.valueOf(amountOrder));
                     response.setStatus(HttpStatus.CREATED);
                 }
             } else {
