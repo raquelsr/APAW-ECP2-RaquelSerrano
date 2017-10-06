@@ -26,10 +26,12 @@ public class OrderResourceFunctionalTesting {
                 .build();
         new HttpClientService().httpRequest(request);
     }
-
-    @Test(expected = HttpException.class)
-    public void testCreateOrderEmpty() {
-        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("").build();
+    
+    
+    @Test
+    public void testCreateNegativeAmountOrder() {
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("-7")
+                .build();
         new HttpClientService().httpRequest(request);
     }
 
