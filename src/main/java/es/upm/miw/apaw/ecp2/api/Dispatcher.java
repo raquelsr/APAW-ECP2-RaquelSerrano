@@ -1,7 +1,9 @@
 package es.upm.miw.apaw.ecp2.api;
 
 import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
+import es.upm.miw.apaw.ecp2.api.resources.OrderResource;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
+import es.upm.miw.apaw.ecp2.api.resources.exception.OrderInvalidException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.RequestInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpRequest;
 import es.upm.miw.apaw.ecp2.http.HttpResponse;
@@ -10,6 +12,8 @@ import es.upm.miw.apaw.ecp2.http.HttpStatus;
 public class Dispatcher {
 
     private CustomerResource customerResource = new CustomerResource();
+    
+    private OrderResource orderResource = new OrderResource();
 
     private void responseError(HttpResponse response, Exception e) {
         response.setBody("{\"error\":\"" + e + "\"}");
@@ -37,6 +41,14 @@ public class Dispatcher {
                     String customerName = request.getBody().split(":")[0];
                     String customerAddress = request.getBody().split(":")[1];
                     customerResource.createCustomer(customerName, customerAddress);
+                    response.setStatus(HttpStatus.CREATED);
+                }
+            } else if (request.isEqualsPath(OrderResource.ORDERS)) {
+                if (request.getBody() == null) {
+                    throw new OrderInvalidException();
+                } else {
+                    String amountOrder = request.getBody();
+                    orderResource.createOrder(Double.valueOf(amountOrder));
                     response.setStatus(HttpStatus.CREATED);
                 }
             } else {
