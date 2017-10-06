@@ -1,5 +1,7 @@
 package es.upm.miw.apaw.ecp2.api;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +21,11 @@ public class CustomerResourceFunctionalTesting {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
 
+    private void createCustomer() {
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Paco:Calle Francia").build();
+        new HttpClientService().httpRequest(request);
+    }
+    
     @Test
     public void testCreateCustomer() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia")
@@ -35,6 +42,31 @@ public class CustomerResourceFunctionalTesting {
     @Test(expected = HttpException.class)
     public void testCreateWithoutCustomerBody() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).build();
+        new HttpClientService().httpRequest(request);
+    }
+    
+    @Test
+    public void testReadCustomer() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").build();
+        assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
+
+    }
+    
+    @Test(expected = HttpException.class)
+    public void testReadCustomerIdNotFoundException() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("4").build();
+        new HttpClientService().httpRequest(request);
+    }
+    
+    @Test(expected = HttpException.class)
+    public void testReadCustomerIdInvalidException() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("-1").build();
         new HttpClientService().httpRequest(request);
     }
 

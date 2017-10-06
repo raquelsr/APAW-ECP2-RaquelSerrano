@@ -8,23 +8,30 @@ import es.upm.miw.apaw.ecp2.http.HttpResponse;
 import es.upm.miw.apaw.ecp2.http.HttpStatus;
 
 public class Dispatcher {
-    
+
     private CustomerResource customerResource = new CustomerResource();
-    
+
     private void responseError(HttpResponse response, Exception e) {
         response.setBody("{\"error\":\"" + e + "\"}");
         response.setStatus(HttpStatus.BAD_REQUEST);
     }
-    
+
     public void doGet(HttpRequest request, HttpResponse response) {
-        // TODO Auto-generated method stub
-        
+        try {
+            if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
+                response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
+            } else {
+                throw new RequestInvalidException(request.getPath());
+            }
+        } catch (Exception e) {
+            responseError(response, e);
+        }
     }
 
     public void doPost(HttpRequest request, HttpResponse response) {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS)) {
-                if ((request.getBody() == null) ||(request.getBody().split(":").length < 2)) {
+                if ((request.getBody() == null) || (request.getBody().split(":").length < 2)) {
                     throw new CustomerInvalidException();
                 } else {
                     String customerName = request.getBody().split(":")[0];
@@ -38,23 +45,22 @@ public class Dispatcher {
         } catch (Exception e) {
             responseError(response, e);
         }
-        
+
     }
 
     public void doPut(HttpRequest request, HttpResponse response) {
         // TODO Auto-generated method stub
-        
+
     }
-    
 
     public void doPatch(HttpRequest request, HttpResponse response) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void doDelete(HttpRequest request, HttpResponse response) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }
