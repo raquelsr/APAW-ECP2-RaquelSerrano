@@ -31,7 +31,7 @@ public class OrderResourceFunctionalTesting {
     public void testCreateNegativeAmountOrder() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("-7")
                 .build();
-        new HttpClientService().httpRequest(request);
+        new HttpClientService().httpRequest(request); 
     }
 
     @Test(expected = HttpException.class)
