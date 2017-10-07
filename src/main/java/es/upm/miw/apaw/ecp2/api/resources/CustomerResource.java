@@ -60,9 +60,14 @@ public class CustomerResource {
         return optional.orElseThrow(() -> new CustomerIdNotFoundException(Integer.toString(customerId)));
     }
 
-    public void updateCustomer(String address) {
-        // TODO Auto-generated method stub
-        
+    public CustomerDto updateCustomer(int id, String address) throws CustomerInvalidException, CustomerIdInvalidException {
+        this.validateId(id);
+        if (address == null) {
+            throw new CustomerInvalidException( "Address: " + address);
+        } else {
+            Optional<CustomerDto> optional = new CustomerController().updateCustomer(id, address);
+            return optional.orElseThrow(() -> new CustomerIdInvalidException(Integer.toString(id)));
+        }
     }
 
 }

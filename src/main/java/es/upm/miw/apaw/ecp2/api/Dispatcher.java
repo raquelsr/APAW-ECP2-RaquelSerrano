@@ -78,7 +78,7 @@ public class Dispatcher {
                 if (request.getBody() == null) {
                     throw new CustomerInvalidException();
                 } else {
-                    customerResource.updateCustomer(request.getBody());
+                    customerResource.updateCustomer(Integer.valueOf(request.paths()[1]) , request.getBody());
                     response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
                 }
             } else {
