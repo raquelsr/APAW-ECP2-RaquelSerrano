@@ -55,7 +55,7 @@ public class CustomerResourceFunctionalTesting {
         new HttpClientService().httpRequest(request);
     }
     
-    @Test
+    @Test(expected = HttpException.class)
     public void testCreateCustomerOrderNotFound() {
         this.createOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:9")
@@ -80,7 +80,7 @@ public class CustomerResourceFunctionalTesting {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").build();
-        assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
+        assertEquals("{\"id\":1,\"name\":\"Paco\",\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
 
     }
 
@@ -105,7 +105,7 @@ public class CustomerResourceFunctionalTesting {
         this.createCustomerWithOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").path(CustomerResource.ORDERS).build();
-        assertEquals("{Juan, [1, ]}", new HttpClientService().httpRequest(request).getBody());
+        assertEquals("{\"id\":1,\"name\":\"Juan\",\"pedidos\":[1]}", new HttpClientService().httpRequest(request).getBody());
 
     }
     

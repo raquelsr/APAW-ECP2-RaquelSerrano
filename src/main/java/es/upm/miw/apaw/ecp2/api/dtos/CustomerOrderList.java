@@ -1,6 +1,5 @@
 package es.upm.miw.apaw.ecp2.api.dtos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import es.upm.miw.apaw.ecp2.api.entities.Order;
@@ -30,9 +29,9 @@ public class CustomerOrderList {
     
     @Override
     public String toString() {
-        String respuesta = "{" + customerDto.getName() + ", [";
+        String respuesta = "{\"id\":" + customerDto.getId() + ",\"name\":\"" + customerDto.getName() + "\",\"pedidos\":" + "[";
         for (Order x : orders) {
-            respuesta = respuesta.concat(x.getId()+", ");
+            respuesta = respuesta.concat(String.valueOf(x.getId()));
         }
         respuesta = respuesta.concat("]}");
         return respuesta;

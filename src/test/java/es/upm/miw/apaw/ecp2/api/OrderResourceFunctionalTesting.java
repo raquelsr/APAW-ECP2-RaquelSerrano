@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
 import es.upm.miw.apaw.ecp2.api.daos.memory.DaoMemoryFactory;
-import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
 import es.upm.miw.apaw.ecp2.api.resources.OrderResource;
 import es.upm.miw.apaw.ecp2.http.HttpClientService;
 import es.upm.miw.apaw.ecp2.http.HttpException;
