@@ -60,4 +60,9 @@ public class CustomerResource {
         return optional.orElseThrow(() -> new CustomerIdNotFoundException(Integer.toString(customerId)));
     }
 
+    public void updateCustomer(String address) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
