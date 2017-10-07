@@ -1,5 +1,7 @@
 package es.upm.miw.apaw.ecp2.api;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +20,12 @@ public class OrderResourceFunctionalTesting {
     @Before
     public void before() {
         DaoFactory.setFactory(new DaoMemoryFactory());
+    }
+    
+    private void createOrder() {
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("7")
+                .build();
+        new HttpClientService().httpRequest(request);
     }
     
     @Test
@@ -46,6 +54,16 @@ public class OrderResourceFunctionalTesting {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("7")
                 .build();
         new HttpClientService().httpRequest(request);
+    }
+    
+    @Test
+    public void testReadListOrders() {
+        this.createOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("8")
+                .build();
+        new HttpClientService().httpRequest(request);
+        HttpRequest request2 = new HttpRequestBuilder().method(HttpMethod.GET).path(OrderResource.ORDERS).build();
+        assertEquals("[{\"id\":1,\"amount\":\"7\"}, {\"id\":2,\"amount\":\"8\"}]", new HttpClientService().httpRequest(request2).getBody());
     }
     
 }
