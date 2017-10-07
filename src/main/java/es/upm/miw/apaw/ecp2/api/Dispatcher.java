@@ -2,6 +2,7 @@ package es.upm.miw.apaw.ecp2.api;
 
 import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
 import es.upm.miw.apaw.ecp2.api.resources.OrderResource;
+import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerIdNotFoundException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.OrderInvalidException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.RequestInvalidException;
@@ -71,8 +72,16 @@ public class Dispatcher {
     }
 
     public void doDelete(HttpRequest request, HttpResponse response) {
-        // TODO Auto-generated method stub
-
+        try {
+            if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
+                int id = Integer.valueOf(request.paths()[1]);
+                this.customerResource.deleteCustomer(id);
+            } else {
+                throw new RequestInvalidException(request.getPath());
+            }
+        } catch (Exception e) {
+            responseError(response, e);
+        }
     }
 
 }
