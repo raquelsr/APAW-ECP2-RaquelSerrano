@@ -73,7 +73,20 @@ public class Dispatcher {
     }
 
     public void doPatch(HttpRequest request, HttpResponse response) {
-        responseError(response, new RequestInvalidException(request.getPath()));
+        try {
+            if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
+                if (request.getBody() == null) {
+                    throw new CustomerInvalidException();
+                } else {
+                    customerResource.updateCustomer(Integer.valueOf(request.paths()[1]) , request.getBody());
+                    response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
+                }
+            } else {
+                throw new RequestInvalidException(request.getPath());
+            }
+        } catch (Exception e) {
+            responseError(response, e);
+        }
     }
 
     public void doDelete(HttpRequest request, HttpResponse response) {
