@@ -24,6 +24,8 @@ public class Dispatcher {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
                 response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
+            } else if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID + CustomerResource.ORDERS + CustomerResource.ID)) {
+                response.setBody(customerResource.readCustomerOrder(Integer.valueOf(request.paths()[1]), Integer.valueOf(request.paths()[2]).toString()));
             } else {
                 throw new RequestInvalidException(request.getPath());
             }
@@ -38,9 +40,15 @@ public class Dispatcher {
                 if ((request.getBody() == null) || (request.getBody().split(":").length < 2)) {
                     throw new CustomerInvalidException();
                 } else {
-                    String customerName = request.getBody().split(":")[0];
-                    String customerAddress = request.getBody().split(":")[1];
-                    customerResource.createCustomer(customerName, customerAddress);
+                    String[] split = request.getBody().split(":");
+                    String customerName = split[0];
+                    String customerAddress = split[1];
+                    if (split.length == 3) {
+                        int orderId = Integer.valueOf(split[2]);
+                        customerResource.createCustomerOrder(customerName, customerAddress, orderId);
+                    } else {
+                        customerResource.createCustomer(customerName, customerAddress);
+                    }
                     response.setStatus(HttpStatus.CREATED);
                 }
             } else if (request.isEqualsPath(OrderResource.ORDERS)) {

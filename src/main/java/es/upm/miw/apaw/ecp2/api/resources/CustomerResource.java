@@ -6,12 +6,16 @@ import es.upm.miw.apaw.ecp2.api.controller.CustomerController;
 import es.upm.miw.apaw.ecp2.api.dtos.CustomerDto;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerIdInvalidException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
+import es.upm.miw.apaw.ecp2.api.resources.exception.OrderInvalidException;
+
 
 public class CustomerResource {
 
     public static final String CUSTOMERS = "customers";
 
     public static final String ID = "/{id}";
+
+    public static final String ORDERS = "/orders";
 
     public void createCustomer(String name, String address) throws CustomerInvalidException {
         if ((name == null) || (address == null)) {
@@ -36,6 +40,21 @@ public class CustomerResource {
     public void deleteCustomer(int id ) throws CustomerIdInvalidException {
         this.validateId(id);
         new CustomerController().deleteCustomer(id);
+    }
+
+    public void createCustomerOrder(String name, String address, int orderId) throws CustomerInvalidException, OrderInvalidException {
+        if ((name == null) || (address == null)) {
+            throw new CustomerInvalidException("Name: " + name + "Address: " + address);
+        } else {
+            if (!new CustomerController().createCustomerOrder(name, address, orderId)) {
+                throw new OrderInvalidException(Integer.toString(orderId));
+            }
+        }
+    }
+
+    public String readCustomerOrder(Integer valueOf, String string) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
