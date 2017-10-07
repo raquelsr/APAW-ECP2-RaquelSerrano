@@ -22,32 +22,32 @@ public class CustomerResourceFunctionalTesting {
     public void before() {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
-    
+
     private void createOrder() {
-        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("7")
-                .build();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("7").build();
         new HttpClientService().httpRequest(request);
     }
 
     private void createCustomer() {
-        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Paco:Calle Francia").build();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Paco:Calle Francia")
+                .build();
         new HttpClientService().httpRequest(request);
     }
-    
+
     private void createCustomerOrder() {
         this.createOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:1")
                 .build();
         new HttpClientService().httpRequest(request);
     }
-    
+
     @Test
     public void testCreateCustomer() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia")
                 .build();
         new HttpClientService().httpRequest(request);
     }
-    
+
     @Test
     public void testCreateCustomerOrder() {
         this.createOrder();
@@ -55,7 +55,6 @@ public class CustomerResourceFunctionalTesting {
                 .build();
         new HttpClientService().httpRequest(request);
     }
-    
 
     @Test(expected = HttpException.class)
     public void testCreateCustomerEmpty() {
@@ -68,7 +67,7 @@ public class CustomerResourceFunctionalTesting {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).build();
         new HttpClientService().httpRequest(request);
     }
-    
+
     @Test
     public void testReadCustomer() {
         this.createCustomer();
@@ -77,7 +76,7 @@ public class CustomerResourceFunctionalTesting {
         assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
 
     }
-       
+
     @Test
     public void testReadCustomerOrder() {
         this.createCustomerOrder();
@@ -86,7 +85,7 @@ public class CustomerResourceFunctionalTesting {
         assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
 
     }
-    
+
     @Test(expected = HttpException.class)
     public void testReadCustomerIdNotFoundException() {
         this.createCustomer();
@@ -94,7 +93,7 @@ public class CustomerResourceFunctionalTesting {
                 .expandPath("4").build();
         new HttpClientService().httpRequest(request);
     }
-    
+
     @Test(expected = HttpException.class)
     public void testReadCustomerIdInvalidException() {
         this.createCustomer();
@@ -102,22 +101,44 @@ public class CustomerResourceFunctionalTesting {
                 .expandPath("-1").build();
         new HttpClientService().httpRequest(request);
     }
-    
+
     @Test
     public void testDeleteCustomer() {
-         this.createCustomer();
-         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                 .expandPath("1").build();
-         new HttpClientService().httpRequest(request);
-    }
-    
-    
-    @Test
-    public void testDeleteCustomerIdInvalidException() {
-         this.createCustomer();
-         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                 .expandPath("3").build();
-         new HttpClientService().httpRequest(request);
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").build();
+        new HttpClientService().httpRequest(request);
     }
 
+    @Test
+    public void testDeleteCustomerIdInvalidException() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("3").build();
+        new HttpClientService().httpRequest(request);
+    }
+
+    @Test
+    public void testPatchCustomer() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PATCH).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").body("Calle Madrid").build();
+        new HttpClientService().httpRequest(request);
+    }
+
+    @Test(expected = HttpException.class)
+    public void testPatchCustomerIdNotFound() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PATCH).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("5").body("Calle Madrid").build();
+        new HttpClientService().httpRequest(request);
+    }
+
+    @Test(expected = HttpException.class)
+    public void testPatchWithoutCustomerBody() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PATCH).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").build();
+        new HttpClientService().httpRequest(request);
+    }
 }
