@@ -84,7 +84,7 @@ public class CustomerResourceFunctionalTesting {
     public void testDeleteCustomerIdInvalidException() {
          this.createCustomer();
          HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                 .expandPath("x").build();
+                 .expandPath("3").build();
          new HttpClientService().httpRequest(request);
     }
 

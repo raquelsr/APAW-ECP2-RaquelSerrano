@@ -12,7 +12,7 @@ import es.upm.miw.apaw.ecp2.http.HttpStatus;
 public class Dispatcher {
 
     private CustomerResource customerResource = new CustomerResource();
-    
+
     private OrderResource orderResource = new OrderResource();
 
     private void responseError(HttpResponse response, Exception e) {
@@ -61,13 +61,11 @@ public class Dispatcher {
     }
 
     public void doPut(HttpRequest request, HttpResponse response) {
-        // TODO Auto-generated method stub
-
+        responseError(response, new RequestInvalidException(request.getPath()));
     }
 
     public void doPatch(HttpRequest request, HttpResponse response) {
-        // TODO Auto-generated method stub
-
+        responseError(response, new RequestInvalidException(request.getPath()));
     }
 
     public void doDelete(HttpRequest request, HttpResponse response) {
