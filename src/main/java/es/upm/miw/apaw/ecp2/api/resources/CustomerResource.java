@@ -33,4 +33,9 @@ public class CustomerResource {
         }
     }
 
+    public void deleteCustomer(int id ) throws CustomerIdInvalidException {
+        this.validateId(id);
+        new CustomerController().deleteCustomer(id);
+    }
+
 }

@@ -71,8 +71,16 @@ public class Dispatcher {
     }
 
     public void doDelete(HttpRequest request, HttpResponse response) {
-        // TODO Auto-generated method stub
-
+        try {
+            if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
+                int id = Integer.valueOf(request.paths()[1]);
+                this.customerResource.deleteCustomer(id);
+            } else {
+                throw new RequestInvalidException(request.getPath());
+            }
+        } catch (Exception e) {
+            responseError(response, e);
+        }
     }
 
 }

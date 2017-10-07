@@ -46,7 +46,7 @@ public class OrderDto {
 
     @Override
     public String toString() {
-        return "{\"id\":" + id + ",\"amount\":\"" + amount + ",\"dia\":\"" + date.DAY_OF_WEEK + "\"}";
+        return "{\"id\":" + id + ",\"amount\":\"" + amount + ",\"dia\":\"" + Calendar.DAY_OF_WEEK + "\"}";
     }
 
 }
