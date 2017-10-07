@@ -26,5 +26,9 @@ public class CustomerController {
         }
     }
 
+    public void deleteCustomer(int id) {
+        DaoFactory.getFactory().getCustomerDao().deleteById(id);
+    }
+
 
 }
