@@ -1,9 +1,11 @@
 package es.upm.miw.apaw.ecp2.api.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
 import es.upm.miw.apaw.ecp2.api.dtos.CustomerDto;
+import es.upm.miw.apaw.ecp2.api.dtos.CustomerOrderList;
 import es.upm.miw.apaw.ecp2.api.entities.Customer;
 import es.upm.miw.apaw.ecp2.api.entities.Order;
 import es.upm.miw.apaw.ecp2.api.entities.builder.CustomerBuilder;
@@ -40,6 +42,15 @@ public class CustomerController {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public Optional<CustomerOrderList> customerOrder(Integer customerId) {
+        if (existCustomerId(customerId)) {
+            List<Order> orderList = DaoFactory.getFactory().getCustomerDao().read(customerId).getOrders();
+            return Optional.of(new CustomerOrderList( new CustomerDto(DaoFactory.getFactory().getCustomerDao().read(customerId)), orderList));
+        } else {
+            return Optional.empty();
         }
     }
 

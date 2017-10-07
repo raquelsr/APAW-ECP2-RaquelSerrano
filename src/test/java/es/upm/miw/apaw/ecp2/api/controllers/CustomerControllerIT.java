@@ -1,7 +1,6 @@
 package es.upm.miw.apaw.ecp2.api.controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +28,14 @@ public class CustomerControllerIT {
     @Test
     public void testReadThemeNonExistId() {
        assertFalse(customerController.readCustomer(2).isPresent());
+    }
+    
+    @Test
+    public void testCustomeOrders() {
+        new CustomerController().createCustomerOrder("Paco", "Madrid", 1);
+        assertEquals("Paco", customerController.customerOrder(1).get().getCustomerDto().getName());
+        assertNull(customerController.customerOrder(1).get().getOrders());
+        
     }
     
 }
