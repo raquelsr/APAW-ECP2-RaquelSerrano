@@ -21,11 +21,6 @@ public class OrderResourceFunctionalTesting {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
     
-    private void createCustomer() {
-        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Paco:Calle Francia").build();
-        new HttpClientService().httpRequest(request);
-    }
-    
     @Test
     public void testCreateOrder() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("7")

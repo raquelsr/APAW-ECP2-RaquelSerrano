@@ -9,7 +9,6 @@ import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
 import es.upm.miw.apaw.ecp2.api.daos.memory.DaoMemoryFactory;
 import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
 import es.upm.miw.apaw.ecp2.api.resources.OrderResource;
-import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpClientService;
 import es.upm.miw.apaw.ecp2.http.HttpException;
 import es.upm.miw.apaw.ecp2.http.HttpMethod;
@@ -34,7 +33,7 @@ public class CustomerResourceFunctionalTesting {
         new HttpClientService().httpRequest(request);
     }
 
-    private void createCustomerOrder() {
+    private void createCustomerWithOrder() {
         this.createOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:1")
                 .build();
@@ -52,6 +51,14 @@ public class CustomerResourceFunctionalTesting {
     public void testCreateCustomerOrder() {
         this.createOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:1")
+                .build();
+        new HttpClientService().httpRequest(request);
+    }
+    
+    @Test
+    public void testCreateCustomerOrderNotFound() {
+        this.createOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:9")
                 .build();
         new HttpClientService().httpRequest(request);
     }
@@ -77,15 +84,6 @@ public class CustomerResourceFunctionalTesting {
 
     }
 
-    @Test
-    public void testReadCustomerOrder() {
-        this.createCustomerOrder();
-        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                .expandPath("1").path(CustomerResource.ORDERS).build();
-        assertEquals("{Juan, [1, ]}", new HttpClientService().httpRequest(request).getBody());
-
-    }
-
     @Test(expected = HttpException.class)
     public void testReadCustomerIdNotFoundException() {
         this.createCustomer();
@@ -102,6 +100,23 @@ public class CustomerResourceFunctionalTesting {
         new HttpClientService().httpRequest(request);
     }
 
+    @Test
+    public void testReadCustomerOrder() {
+        this.createCustomerWithOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").path(CustomerResource.ORDERS).build();
+        assertEquals("{Juan, [1, ]}", new HttpClientService().httpRequest(request).getBody());
+
+    }
+    
+    @Test(expected = HttpException.class)
+    public void testReadCustomerOrderIdNotFoundException() {
+        this.createCustomer();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("8").build();
+        new HttpClientService().httpRequest(request);
+    }
+    
     @Test
     public void testDeleteCustomer() {
         this.createCustomer();
@@ -138,6 +153,13 @@ public class CustomerResourceFunctionalTesting {
     public void testPatchWithoutCustomerBody() {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PATCH).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").build();
+        new HttpClientService().httpRequest(request);
+    }
+    
+    @Test(expected = HttpException.class)
+    public void testPutCustomerRequestInvalid() {
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PUT).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").build();
         new HttpClientService().httpRequest(request);
     }

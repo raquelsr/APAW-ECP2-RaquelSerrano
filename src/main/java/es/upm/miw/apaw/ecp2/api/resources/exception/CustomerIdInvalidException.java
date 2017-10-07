@@ -4,11 +4,11 @@ public class CustomerIdInvalidException extends Exception {
 
     private static final long serialVersionUID = -1114229143403477951L;
 
-    public static final String DESCRIPTION = "El id no es correcto";
+    public static final String DESCRIPTION = "El id debe ser un número postivo";
 
     public CustomerIdInvalidException(String detail) {
         super(DESCRIPTION + ". " + detail);
-    }
+    } 
 
     public CustomerIdInvalidException() {
         this("");

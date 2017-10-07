@@ -2,8 +2,8 @@ package es.upm.miw.apaw.ecp2.api;
 
 import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
 import es.upm.miw.apaw.ecp2.api.resources.OrderResource;
+import es.upm.miw.apaw.ecp2.api.resources.exception.BodyEmptyException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
-import es.upm.miw.apaw.ecp2.api.resources.exception.OrderInvalidException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.RequestInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpRequest;
 import es.upm.miw.apaw.ecp2.http.HttpResponse;
@@ -37,7 +37,9 @@ public class Dispatcher {
     public void doPost(HttpRequest request, HttpResponse response) {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS)) {
-                if ((request.getBody() == null) || (request.getBody().split(":").length < 2)) {
+                if (request.getBody() == null) {
+                    throw new BodyEmptyException();
+                } else if (request.getBody().split(":").length < 2) {
                     throw new CustomerInvalidException();
                 } else {
                     String[] split = request.getBody().split(":");
@@ -53,7 +55,7 @@ public class Dispatcher {
                 }
             } else if (request.isEqualsPath(OrderResource.ORDERS)) {
                 if (request.getBody() == null) {
-                    throw new OrderInvalidException();
+                    throw new BodyEmptyException();
                 } else {
                     String amountOrder = request.getBody();
                     orderResource.createOrder(Double.valueOf(amountOrder));
@@ -76,7 +78,7 @@ public class Dispatcher {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
                 if (request.getBody() == null) {
-                    throw new CustomerInvalidException();
+                    throw new BodyEmptyException();
                 } else {
                     customerResource.updateCustomer(Integer.valueOf(request.paths()[1]) , request.getBody());
                     response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
@@ -94,6 +96,7 @@ public class Dispatcher {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
                 int id = Integer.valueOf(request.paths()[1]);
                 this.customerResource.deleteCustomer(id);
+                response.setStatus(HttpStatus.NO_CONTENT);
             } else {
                 throw new RequestInvalidException(request.getPath());
             }
