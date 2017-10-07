@@ -1,6 +1,8 @@
 package es.upm.miw.apaw.ecp2.api.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
@@ -25,5 +27,14 @@ public class OrderController {
         } else {
             return Optional.empty();
         }
+    }
+
+    public List<OrderDto> readListOrders() {
+        List<Order> orderList = DaoFactory.getFactory().getOrderDao().findAll();
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for (Order order : orderList) {
+            orderDtoList.add(new OrderDto(order));
+        }
+        return orderDtoList;
     }
 }

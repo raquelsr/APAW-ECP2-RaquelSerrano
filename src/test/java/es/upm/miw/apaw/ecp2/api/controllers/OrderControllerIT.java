@@ -33,4 +33,10 @@ public class OrderControllerIT {
         assertNull(DaoFactory.getFactory().getCustomerDao().read(2));
     }
     
+    @Test
+    public void testReadListOrders() {
+        orderController.createOrder(new BigDecimal("8"));
+        orderController.createOrder(new BigDecimal("9"));
+        assertEquals(3, orderController.readListOrders().size());
+    }
 }
