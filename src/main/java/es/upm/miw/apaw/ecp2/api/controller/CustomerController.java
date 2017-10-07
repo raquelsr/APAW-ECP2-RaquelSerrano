@@ -54,5 +54,16 @@ public class CustomerController {
         }
     }
 
+    public Optional<CustomerDto> updateCustomer(int id, String address) {
+        if (existCustomerId(id)) {
+            Customer customer = DaoFactory.getFactory().getCustomerDao().read(id);
+            customer.setAddress(address);
+            DaoFactory.getFactory().getCustomerDao().update(customer);
+            return Optional.of(new CustomerDto(DaoFactory.getFactory().getCustomerDao().read(id)));
+        } else {
+            return Optional.empty();
+        }
+    }
+
 
 }

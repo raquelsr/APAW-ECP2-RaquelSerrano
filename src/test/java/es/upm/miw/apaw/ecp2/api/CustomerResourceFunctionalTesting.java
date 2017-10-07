@@ -82,7 +82,7 @@ public class CustomerResourceFunctionalTesting {
         this.createCustomerOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").path(CustomerResource.ORDERS).build();
-        assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
+        assertEquals("{Juan, [1, ]}", new HttpClientService().httpRequest(request).getBody());
 
     }
 
