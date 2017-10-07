@@ -2,15 +2,15 @@ package es.upm.miw.apaw.ecp2.api.daos;
 
 import java.util.List;
 
-public interface GenericDao<T, ID> {
+public interface GenericDao<T, I> {
 
     void create(T entity);
 
-    T read(ID id);
+    T read(I id);
 
     void update(T entity);
 
-    void deleteById(ID id);
+    void deleteById(I id);
 
     List<T> findAll();
 

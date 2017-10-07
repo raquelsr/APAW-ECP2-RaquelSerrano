@@ -8,6 +8,7 @@ import org.junit.Test;
 import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
 import es.upm.miw.apaw.ecp2.api.daos.memory.DaoMemoryFactory;
 import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
+import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpClientService;
 import es.upm.miw.apaw.ecp2.http.HttpException;
 import es.upm.miw.apaw.ecp2.http.HttpMethod;
@@ -68,6 +69,23 @@ public class CustomerResourceFunctionalTesting {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("-1").build();
         new HttpClientService().httpRequest(request);
+    }
+    
+    @Test
+    public void testDeleteCustomer() {
+         this.createCustomer();
+         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                 .expandPath("1").build();
+         new HttpClientService().httpRequest(request);
+    }
+    
+    
+    @Test
+    public void testDeleteCustomerIdNotFoundException() {
+         this.createCustomer();
+         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                 .expandPath("2").build();
+         new HttpClientService().httpRequest(request);
     }
 
 }
