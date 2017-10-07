@@ -24,8 +24,8 @@ public class Dispatcher {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
                 response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
-            } else if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID + CustomerResource.ORDERS + CustomerResource.ID)) {
-                response.setBody(customerResource.readCustomerOrder(Integer.valueOf(request.paths()[1]), Integer.valueOf(request.paths()[2]).toString()));
+            } else if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID + CustomerResource.ORDERS)) {
+                response.setBody(customerResource.readCustomerOrder(Integer.valueOf(request.paths()[1])).toString());
             } else {
                 throw new RequestInvalidException(request.getPath());
             }

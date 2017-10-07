@@ -1,10 +1,13 @@
 package es.upm.miw.apaw.ecp2.api.resources;
 
+import java.util.List;
 import java.util.Optional;
 
 import es.upm.miw.apaw.ecp2.api.controller.CustomerController;
 import es.upm.miw.apaw.ecp2.api.dtos.CustomerDto;
+import es.upm.miw.apaw.ecp2.api.dtos.CustomerOrderList;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerIdInvalidException;
+import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerIdNotFoundException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
 import es.upm.miw.apaw.ecp2.api.resources.exception.OrderInvalidException;
 
@@ -52,9 +55,9 @@ public class CustomerResource {
         }
     }
 
-    public String readCustomerOrder(Integer valueOf, String string) {
-        // TODO Auto-generated method stub
-        return null;
+    public CustomerOrderList readCustomerOrder(Integer customerId) throws CustomerIdNotFoundException {
+        Optional<CustomerOrderList> optional = new CustomerController().customerOrder(customerId);
+        return optional.orElseThrow(() -> new CustomerIdNotFoundException(Integer.toString(customerId)));
     }
 
 }
