@@ -8,6 +8,7 @@ import org.junit.Test;
 import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
 import es.upm.miw.apaw.ecp2.api.daos.memory.DaoMemoryFactory;
 import es.upm.miw.apaw.ecp2.api.resources.CustomerResource;
+import es.upm.miw.apaw.ecp2.api.resources.OrderResource;
 import es.upm.miw.apaw.ecp2.api.resources.exception.CustomerInvalidException;
 import es.upm.miw.apaw.ecp2.http.HttpClientService;
 import es.upm.miw.apaw.ecp2.http.HttpException;
@@ -21,9 +22,22 @@ public class CustomerResourceFunctionalTesting {
     public void before() {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
+    
+    private void createOrder() {
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(OrderResource.ORDERS).body("7")
+                .build();
+        new HttpClientService().httpRequest(request);
+    }
 
     private void createCustomer() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Paco:Calle Francia").build();
+        new HttpClientService().httpRequest(request);
+    }
+    
+    private void createCustomerOrder() {
+        this.createOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:1")
+                .build();
         new HttpClientService().httpRequest(request);
     }
     
@@ -33,6 +47,15 @@ public class CustomerResourceFunctionalTesting {
                 .build();
         new HttpClientService().httpRequest(request);
     }
+    
+    @Test
+    public void testCreateCustomerOrder() {
+        this.createOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:1")
+                .build();
+        new HttpClientService().httpRequest(request);
+    }
+    
 
     @Test(expected = HttpException.class)
     public void testCreateCustomerEmpty() {
@@ -51,6 +74,15 @@ public class CustomerResourceFunctionalTesting {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").build();
+        assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
+
+    }
+       
+    @Test
+    public void testReadCustomerOrder() {
+        this.createCustomerOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("1").path(CustomerResource.ORDERS).build();
         assertEquals("{\"id\":1,\"name\":\"Paco,\"address\":\"Calle Francia\"}", new HttpClientService().httpRequest(request).getBody());
 
     }
