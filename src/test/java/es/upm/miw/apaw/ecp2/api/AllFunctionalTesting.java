@@ -1,4 +1,4 @@
-package es.upm.miw.apaw.ecp2.api;
+ package es.upm.miw.apaw.ecp2.api;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
