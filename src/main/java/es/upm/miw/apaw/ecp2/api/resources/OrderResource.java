@@ -1,8 +1,10 @@
 package es.upm.miw.apaw.ecp2.api.resources;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import es.upm.miw.apaw.ecp2.api.controller.OrderController;
+import es.upm.miw.apaw.ecp2.api.dtos.OrderDto;
 import es.upm.miw.apaw.ecp2.api.resources.exception.OrderInvalidException;
 
 public class OrderResource {
@@ -16,5 +18,9 @@ public class OrderResource {
         BigDecimal amount = new BigDecimal(amountAux);
         new OrderController().createOrder(amount);
         
+    }
+
+    public List<OrderDto> readListOrders() {
+        return new OrderController().readListOrders();
     }
 }

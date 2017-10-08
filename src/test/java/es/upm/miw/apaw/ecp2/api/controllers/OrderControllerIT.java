@@ -1,7 +1,6 @@
 package es.upm.miw.apaw.ecp2.api.controllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
@@ -9,7 +8,6 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.upm.miw.apaw.ecp2.api.controller.CustomerController;
 import es.upm.miw.apaw.ecp2.api.controller.OrderController;
 import es.upm.miw.apaw.ecp2.api.daos.DaoFactory;
 import es.upm.miw.apaw.ecp2.api.daos.memory.DaoMemoryFactory;
@@ -35,4 +33,10 @@ public class OrderControllerIT {
         assertNull(DaoFactory.getFactory().getCustomerDao().read(2));
     }
     
+    @Test
+    public void testReadListOrders() {
+        orderController.createOrder(new BigDecimal("8"));
+        orderController.createOrder(new BigDecimal("9"));
+        assertEquals(3, orderController.readListOrders().size());
+    }
 }

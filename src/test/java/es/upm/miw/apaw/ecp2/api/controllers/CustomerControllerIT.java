@@ -21,21 +21,33 @@ public class CustomerControllerIT {
     }
 
     @Test
-    public void testReadTheme() {
+    public void testReadCustomer() {
        assertEquals("Paco", customerController.readCustomer(1).get().getName());
     }
     
     @Test
-    public void testReadThemeNonExistId() {
+    public void testReadCustomerNonExistId() {
        assertFalse(customerController.readCustomer(2).isPresent());
     }
     
     @Test
-    public void testCustomeOrders() {
+    public void testCustomerOrdersList() {
         new CustomerController().createCustomerOrder("Paco", "Madrid", 1);
-        assertEquals("Paco", customerController.customerOrder(1).get().getCustomerDto().getName());
-        assertNull(customerController.customerOrder(1).get().getOrders());
+        assertEquals("Paco", customerController.customerOrderList(1).get().getCustomerDto().getName());
+        assertNull(customerController.customerOrderList(1).get().getOrders());
         
+    }
+    
+    @Test
+    public void testUpdateCustomer() {
+        new CustomerController().updateCustomer(customerController.readCustomer(1).get().getId(), "Calle Lechuga");
+        assertEquals("Calle Lechuga", customerController.readCustomer(1).get().getAddress());
+    }
+    
+    @Test
+    public void testDeleteCustomer() {
+        new CustomerController().deleteCustomer(customerController.readCustomer(1).get().getId());
+        assertFalse(customerController.readCustomer(1).isPresent());
     }
     
 }
