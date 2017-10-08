@@ -29,7 +29,7 @@ public class CustomerOrderList {
     
     @Override
     public String toString() {
-        String respuesta = "{\"id\":" + customerDto.getId() + ",\"name\":\"" + customerDto.getName() + "\",\"pedidos\":" + "[";
+        String respuesta = "{\"pedidos\":" + "[";
         for (Order x : orders) {
             respuesta = respuesta.concat(String.valueOf(x.getId()));
         }

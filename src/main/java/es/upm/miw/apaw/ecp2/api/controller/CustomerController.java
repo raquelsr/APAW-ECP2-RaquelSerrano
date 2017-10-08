@@ -30,10 +30,6 @@ public class CustomerController {
         }
     }
 
-    public void deleteCustomer(int id) {
-        DaoFactory.getFactory().getCustomerDao().deleteById(id);
-    }
-
     public boolean createCustomerOrder(String name, String address, int orderId) {
         Order order = DaoFactory.getFactory().getOrderDao().read(orderId);
         if (order != null) {
@@ -45,7 +41,7 @@ public class CustomerController {
         }
     }
 
-    public Optional<CustomerOrderList> customerOrder(Integer customerId) {
+    public Optional<CustomerOrderList> customerOrderList(Integer customerId) {
         if (existCustomerId(customerId)) {
             List<Order> orderList = DaoFactory.getFactory().getCustomerDao().read(customerId).getOrders();
             return Optional.of(new CustomerOrderList( new CustomerDto(DaoFactory.getFactory().getCustomerDao().read(customerId)), orderList));
@@ -64,6 +60,9 @@ public class CustomerController {
             return Optional.empty();
         }
     }
-
+    
+    public void deleteCustomer(int id) {
+        DaoFactory.getFactory().getCustomerDao().deleteById(id);
+    }
 
 }

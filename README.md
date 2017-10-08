@@ -6,5 +6,7 @@
 ### Descripción
 Desarrollo de la práctica ECP2. Arquitecturas y Patrones Web.
 
+![](https://github.com/raquelsr/APAW-ECP2-RaquelSerrano/blob/master/docs/ECP-customer-order.png)
+
 
 

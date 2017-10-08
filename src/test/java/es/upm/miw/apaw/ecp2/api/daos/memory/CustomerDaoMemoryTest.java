@@ -11,6 +11,7 @@ import es.upm.miw.apaw.ecp2.api.daos.memory.DaoMemoryFactory;
 import es.upm.miw.apaw.ecp2.api.entities.Customer;
 import es.upm.miw.apaw.ecp2.api.entities.builder.CustomerBuilder;
 
+
 public class CustomerDaoMemoryTest {
 
     private Customer customer;
@@ -31,5 +32,25 @@ public class CustomerDaoMemoryTest {
     public void testReadNonExistId() {
         assertNull(DaoFactory.getFactory().getCustomerDao().read(2));
     }
+    
+    @Test
+    public void testUpdate() {
+        customer.setName("Pepe");
+        DaoFactory.getFactory().getCustomerDao().update(customer);
+        assertEquals("Pepe", DaoFactory.getFactory().getCustomerDao().read(customer.getId()).getName());
+    }
+
+    @Test
+    public void testDeleteById() {
+        DaoFactory.getFactory().getCustomerDao().deleteById(customer.getId());
+        assertNull(DaoFactory.getFactory().getCustomerDao().read(customer.getId()));
+    }
+
+    @Test
+    public void testFindAll() {
+        DaoFactory.getFactory().getCustomerDao().create(new CustomerBuilder("Juan", "Calle Madrid").build());
+        assertEquals(2, DaoFactory.getFactory().getCustomerDao().findAll().size());
+    }
+
 
 }

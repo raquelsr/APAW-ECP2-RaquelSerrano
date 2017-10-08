@@ -25,7 +25,7 @@ public class Dispatcher {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
                 response.setBody(customerResource.readCustomer(Integer.valueOf(request.paths()[1])).toString());
             } else if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID + CustomerResource.ORDERS)) {
-                response.setBody(customerResource.readCustomerOrder(Integer.valueOf(request.paths()[1])).toString());
+                response.setBody(customerResource.readCustomerOrderList(Integer.valueOf(request.paths()[1])).toString());
             } else if (request.isEqualsPath(OrderResource.ORDERS)) {
                 response.setBody(orderResource.readListOrders().toString());
             } else {
@@ -48,7 +48,7 @@ public class Dispatcher {
                     String customerName = split[0];
                     String customerAddress = split[1];
                     if (split.length == 3) {
-                        int orderId = Integer.valueOf(split[2]);
+                        int orderId = Integer.parseInt(split[2]);
                         customerResource.createCustomerOrder(customerName, customerAddress, orderId);
                     } else {
                         customerResource.createCustomer(customerName, customerAddress);
@@ -96,7 +96,7 @@ public class Dispatcher {
     public void doDelete(HttpRequest request, HttpResponse response) {
         try {
             if (request.isEqualsPath(CustomerResource.CUSTOMERS + CustomerResource.ID)) {
-                int id = Integer.valueOf(request.paths()[1]);
+                int id = Integer.parseInt(request.paths()[1]);
                 this.customerResource.deleteCustomer(id);
                 response.setStatus(HttpStatus.NO_CONTENT);
             } else {

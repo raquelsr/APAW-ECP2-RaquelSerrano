@@ -56,7 +56,7 @@ public class CustomerResourceFunctionalTesting {
     }
     
     @Test(expected = HttpException.class)
-    public void testCreateCustomerOrderNotFound() {
+    public void testCreateCustomerIdOrderNotFound() {
         this.createOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).body("Juan:Calle Francia:9")
                 .build();
@@ -70,7 +70,7 @@ public class CustomerResourceFunctionalTesting {
     }
 
     @Test(expected = HttpException.class)
-    public void testCreateWithoutCustomerBody() {
+    public void testCreateCustomerWithoutBody() {
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.POST).path(CustomerResource.CUSTOMERS).build();
         new HttpClientService().httpRequest(request);
     }
@@ -96,7 +96,7 @@ public class CustomerResourceFunctionalTesting {
     public void testReadCustomerIdInvalidException() {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                .expandPath("-1").build();
+                .expandPath("-9").build();
         new HttpClientService().httpRequest(request);
     }
 
@@ -105,7 +105,7 @@ public class CustomerResourceFunctionalTesting {
         this.createCustomerWithOrder();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").path(CustomerResource.ORDERS).build();
-        assertEquals("{\"id\":1,\"name\":\"Juan\",\"pedidos\":[1]}", new HttpClientService().httpRequest(request).getBody());
+        assertEquals("{\"pedidos\":[1]}", new HttpClientService().httpRequest(request).getBody());
 
     }
     
@@ -117,6 +117,14 @@ public class CustomerResourceFunctionalTesting {
         new HttpClientService().httpRequest(request);
     }
     
+    @Test(expected = HttpException.class)
+    public void testReadCustomerOrderIdInvalid() {
+        this.createCustomerWithOrder();
+        HttpRequest request = new HttpRequestBuilder().method(HttpMethod.GET).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
+                .expandPath("-1").path(CustomerResource.ORDERS).build();
+        new HttpClientService().httpRequest(request);
+    }
+    
     @Test
     public void testDeleteCustomer() {
         this.createCustomer();
@@ -125,11 +133,11 @@ public class CustomerResourceFunctionalTesting {
         new HttpClientService().httpRequest(request);
     }
 
-    @Test
+    @Test(expected = HttpException.class)
     public void testDeleteCustomerIdInvalidException() {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.DELETE).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                .expandPath("3").build();
+                .expandPath("-3").build();
         new HttpClientService().httpRequest(request);
     }
 
@@ -138,14 +146,16 @@ public class CustomerResourceFunctionalTesting {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PATCH).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
                 .expandPath("1").body("Calle Madrid").build();
-        new HttpClientService().httpRequest(request);
+        assertEquals("{\"id\":1,\"name\":\"Paco\",\"address\":\"Calle Madrid\"}", new HttpClientService().httpRequest(request).getBody());
     }
 
+
+    
     @Test(expected = HttpException.class)
-    public void testPatchCustomerIdNotFound() {
+    public void testPatchCustomerIdInvalidException() {
         this.createCustomer();
         HttpRequest request = new HttpRequestBuilder().method(HttpMethod.PATCH).path(CustomerResource.CUSTOMERS).path(CustomerResource.ID)
-                .expandPath("5").body("Calle Madrid").build();
+                .expandPath("-1").body("Calle Madrid").build();
         new HttpClientService().httpRequest(request);
     }
 
